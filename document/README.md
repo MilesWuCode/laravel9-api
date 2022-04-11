@@ -1,5 +1,14 @@
 # history
 
+## email verification
+
+-   app/Models/User.php
+
+```diff
+- class User extends Authenticatable
++ class User extends Authenticatable implements MustVerifyEmail
+```
+
 ## sanctum
 
 ```sh
@@ -13,7 +22,8 @@ php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
 php artisan migrate
 ```
 
-edit app/Http/Kernel.php
+-   app/Http/Kernel.php
+
 ```diff
 'api' => [
 -   // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
@@ -21,4 +31,22 @@ edit app/Http/Kernel.php
     'throttle:api',
     \Illuminate\Routing\Middleware\SubstituteBindings::class,
 ],
+```
+
+## barryvdh/laravel-ide-helper
+
+```sh
+# install
+composer require barryvdh/laravel-ide-helper
+
+# generate
+php artisan ide-helper:generate
+
+# model
+php artisan ide-helper:models
+```
+
+```ini
+# .gitignore
+_ide_helper.php
 ```
