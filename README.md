@@ -4,7 +4,12 @@
 
 ```sh
 # composer install
-docker run --rm -v $(pwd):/app composer install --ignore-platform-reqs
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v $(pwd):/var/www/html \
+    -w /var/www/html \
+    laravelsail/php81-composer:latest \
+    composer install --ignore-platform-reqs
 
 # env file
 cp .env.sail
@@ -18,6 +23,6 @@ sail artisan k:g
 # update packages
 sail composer update
 
-# open bowser
-http://localhost
+# view website
+open http://localhost
 ```
