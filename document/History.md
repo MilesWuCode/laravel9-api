@@ -2,11 +2,17 @@
 
 ## email verification
 
+-   app/Http/Controllers/AuthController.php
+-   app/Notifications/CustomVerifyEmail.php
 -   app/Models/User.php
 
 ```diff
 - class User extends Authenticatable
 + class User extends Authenticatable implements MustVerifyEmail
+
++ public function sendEmailVerificationNotification()
++ public function verifies(): HasMany
++ public function verifyCode(string $code): bool
 ```
 
 ## sanctum

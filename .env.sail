@@ -1,4 +1,4 @@
-APP_NAME=Laravel9-Api
+APP_NAME=Laravel9-API
 APP_ENV=local
 APP_KEY=
 APP_DEBUG=true
@@ -53,3 +53,7 @@ MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 
 SCOUT_DRIVER=meilisearch
 MEILISEARCH_HOST=http://meilisearch:7700
+
+# frontend
+FRONTEND_URL=http://localhost:3000
+FRONTEND_EMAIL_VERIFY_URL="${FRONTEND_URL}/email/verify"
