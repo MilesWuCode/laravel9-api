@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -19,7 +20,7 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
@@ -47,30 +48,21 @@ class AuthController extends Controller
      */
     public function sendVerifyEmail(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        Validator::make($request->all(), [
             'email' => 'required|email',
         ])->validate();
 
         $email = $request->email;
 
-        $user = User::where('email', $email)->first();
-
-        if (!$user) {
-            return response()->json([
-                'message' => 'email not found',
-                'errors' => [
-                    'email' => 'not found',
-                ],
-            ], 422);
-        }
+        $user = User::where('email', $email)->firstOrFail();
 
         if ($user->hasVerifiedEmail()) {
             abort(400, 'Email already verified.');
-        } else {
-            event(new Registered($user));
         }
 
-        return response()->json($user->toArray(), 200);
+        $user->sendEmailVerificationNotification();
+
+        return response()->json(['message' => 'success'], 200);
     }
 
     /**
@@ -81,40 +73,52 @@ class AuthController extends Controller
      */
     public function verifyEmail(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required',
-            'hash' => 'required',
-            'expires' => 'required',
-            // 自定義
+        Validator::make($request->all(), [
+            'email' => 'required|email',
             'code' => 'required',
         ])->validate();
 
-        $user = User::find($request->id);
+        $email = $request->email;
 
-        if (!$user) {
-            return response()->json([
-                'message' => 'email not found',
-                'errors' => [
-                    'email' => 'not found',
-                ],
-            ], 422);
-        }
+        $user = User::where('email', $email)->firstOrFail();
 
-        if (!hash_equals((string) $request->hash, sha1($user->getEmailForVerification()))) {
-            abort(401, 'Unauthorized');
+        if ($user->hasVerifiedEmail()) {
+            abort(403, 'Your email address is verified.');
         }
 
         if (!$user->verifyCode((string) $request->code)) {
             abort(401, 'Unauthorized');
         }
 
-        if (!$user->hasVerifiedEmail()) {
-            $user->markEmailAsVerified();
+        $user->markEmailAsVerified();
 
-            event(new Verified($user));
+        event(new Verified($user));
+
+        return response()->json(['message' => 'success'], 200);
+    }
+
+    /**
+     * Login.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    public function login(Request $request)
+    {
+        Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|min:8',
+        ])->validate();
+
+        $credentials = $request->only(['email', 'password']);
+
+        if (Auth::attempt($credentials)) {
+            $token = $request->user()->createToken('normal');
+
+            return ['token' => $token->plainTextToken];
+        } else {
+            abort(401, 'Unauthorized');
         }
-
-        return response()->json($user->toArray(), 200);
     }
 
     /**
@@ -125,6 +129,8 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        return $request->user()->token()->revoke();
+        $request->user()->currentAccessToken()->delete();
+
+        return ['message' => 'success'];
     }
 }

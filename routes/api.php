@@ -19,9 +19,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::controller(AuthController::class)->group(function () {
+Route::controller(AuthController::class)->middleware('throttle:6,1')->group(function () {
     Route::post('/auth/register', 'register')->name('auth.register');
-    Route::middleware('throttle:6,1')->post('/auth/send-verify-email', 'sendVerifyEmail');
+    Route::post('/auth/send-verify-email', 'sendVerifyEmail');
     Route::post('/auth/verify-email', 'verifyEmail');
+    Route::post('/auth/login', 'login')->name('auth.login');
     Route::middleware('auth:sanctum')->post('/auth/logout', 'logout')->name('auth.logout');
 });
