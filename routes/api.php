@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,14 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::controller(AuthController::class)->middleware('throttle:6,1')->group(function () {
     Route::post('/auth/register', 'register')->name('auth.register');
     Route::post('/auth/send-verify-email', 'sendVerifyEmail');
     Route::post('/auth/verify-email', 'verifyEmail');
     Route::post('/auth/login', 'login')->name('auth.login');
     Route::middleware('auth:sanctum')->post('/auth/logout', 'logout')->name('auth.logout');
+});
+
+Route::controller(MeController::class)->middleware('auth:sanctum')->group(function () {
+    Route::get('/me', 'show')->name('me.show');
+    Route::post('/me', 'update')->name('me.update');
 });

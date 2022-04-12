@@ -1,6 +1,6 @@
 # laravel9-api
 
-## run
+## sail run
 
 ```sh
 # composer install
@@ -14,6 +14,9 @@ docker run --rm \
 # env file
 cp .env.sail
 
+# alias sail
+alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
+
 # run sail
 sail up -d
 
@@ -22,6 +25,9 @@ sail artisan k:g
 
 # update packages
 sail composer update
+
+# update autoload
+sail composer dump-autoload
 
 # view website
 open http://localhost

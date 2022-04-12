@@ -56,3 +56,16 @@ php artisan ide-helper:models
 # .gitignore
 _ide_helper.php
 ```
+
+## spatie/laravel-fractal
+
+```sh
+# install
+composer require spatie/laravel-fractal
+
+# config
+php artisan vendor:publish --provider="Spatie\Fractal\FractalServiceProvider"
+
+# make
+php artisan make:transformer UserTransformer
+```
