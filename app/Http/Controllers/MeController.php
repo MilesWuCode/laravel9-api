@@ -51,18 +51,28 @@ class MeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function changePassword(Request $request): JsonResponse
+    public function changePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'password' => 'required|min:8',
-            'comfirm_password' => 'required|same:password',
-        ])->validate();
+            'old_password' => 'required|current_password',
+            'new_password' => 'required|min:8|different:old_password',
+            'comfirm_password' => 'required|same:new_password',
+        ]);
 
-        $password = Hash::make($validator['password']);
+        $validator->validate();
 
-        $request->user()->update(['password' => $password]);
+        //* validator rule:current_password
+        // if (!Hash::check($request->old_password, $request->user()->password)) {
+        //     $validator->errors()->add('old_password', 'old password wrong');
 
-        return Fractal::create($request->user(), new UserTransformer())
-            ->respond();
+        //     return response()->json([
+        //         'message' => 'old password wrong',
+        //         'errors' => $validator->errors()->messages(),
+        //     ], 422);
+        // }
+
+        $request->user()->update(['password' => Hash::make($request->new_password)]);
+
+        return response()->json(['message' => 'success'], 200);
     }
 }

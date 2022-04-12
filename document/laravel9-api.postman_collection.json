@@ -341,6 +341,62 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "change password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "old_password",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "new_password",
+									"value": "password1",
+									"type": "text"
+								},
+								{
+									"key": "comfirm_password",
+									"value": "password1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{http}}://{{domain}}/api/me/change-password",
+							"protocol": "{{http}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"me",
+								"change-password"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

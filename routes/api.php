@@ -27,4 +27,5 @@ Route::controller(AuthController::class)->middleware('throttle:6,1')->group(func
 Route::controller(MeController::class)->middleware('auth:sanctum')->group(function () {
     Route::get('/me', 'show')->name('me.show');
     Route::post('/me', 'update')->name('me.update');
+    Route::post('/me/change-password', 'changePassword')->name('me.change-password');
 });

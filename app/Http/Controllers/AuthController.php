@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -16,9 +17,9 @@ class AuthController extends Controller
      * User register.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request)
+    public function register(Request $request): JsonResponse
     {
         Validator::make($request->all(), [
             'name' => 'required',
@@ -44,9 +45,9 @@ class AuthController extends Controller
      * send verify email.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function sendVerifyEmail(Request $request)
+    public function sendVerifyEmail(Request $request): JsonResponse
     {
         Validator::make($request->all(), [
             'email' => 'required|email',
@@ -69,9 +70,9 @@ class AuthController extends Controller
      * verify email.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function verifyEmail(Request $request)
+    public function verifyEmail(Request $request): JsonResponse
     {
         Validator::make($request->all(), [
             'email' => 'required|email',
@@ -101,9 +102,9 @@ class AuthController extends Controller
      * Login.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return bool
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         Validator::make($request->all(), [
             'email' => 'required|email',
@@ -112,25 +113,25 @@ class AuthController extends Controller
 
         $credentials = $request->only(['email', 'password']);
 
-        if (Auth::attempt($credentials)) {
-            $token = $request->user()->createToken('normal');
-
-            return ['token' => $token->plainTextToken];
-        } else {
+        if (!Auth::attempt($credentials)) {
             abort(401, 'Unauthorized');
         }
+
+        $token = $request->user()->createToken('normal');
+
+        return response()->json(['token' => $token->plainTextToken], 200);
     }
 
     /**
      * Logout.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return bool
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
         $request->user()->currentAccessToken()->delete();
 
-        return ['message' => 'success'];
+        return response()->json(['message' => 'success'], 200);
     }
 }
