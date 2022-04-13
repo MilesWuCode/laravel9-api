@@ -84,3 +84,29 @@ php artisan vendor:publish --provider="BeyondCode\QueryDetector\QueryDetectorSer
 # .env
 QUERY_DETECTOR_ENABLED=true
 ```
+
+## sentry/sentry-laravel
+
+```sh
+composer require sentry/sentry-laravel
+```
+
+```diff
+# App/Exceptions/Handler.php
+public function register()
+{
+    $this->reportable(function (Throwable $e) {
++       if (app()->bound('sentry')) {
++           app('sentry')->captureException($e);
++       }
+    });
+}
+```
+
+```sh
+# env
+php artisan sentry:publish --dsn=xxx
+
+# test
+php artisan sentry:test
+```

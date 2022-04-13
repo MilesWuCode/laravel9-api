@@ -29,6 +29,9 @@ sail composer update
 # update autoload
 sail composer dump-autoload
 
+# option
+sail php artisan sentry:publish --dsn=xxx
+
 # view website
 open http://localhost
 ```

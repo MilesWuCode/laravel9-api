@@ -12,6 +12,7 @@
         "laravel/framework": "^9.2",
         "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.7",
+        "sentry/sentry-laravel": "^2.12",
         "spatie/laravel-fractal": "^6.0"
     },
     "require-dev": {
