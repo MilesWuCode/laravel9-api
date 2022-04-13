@@ -57,3 +57,6 @@ MEILISEARCH_HOST=http://meilisearch:7700
 # frontend
 FRONTEND_URL=http://localhost:3000
 FRONTEND_EMAIL_VERIFY_URL="${FRONTEND_URL}/email/verify"
+
+# n+1
+QUERY_DETECTOR_ENABLED=true

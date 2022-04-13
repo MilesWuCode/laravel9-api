@@ -69,3 +69,18 @@ php artisan vendor:publish --provider="Spatie\Fractal\FractalServiceProvider"
 # make
 php artisan make:transformer UserTransformer
 ```
+
+## beyondcode/laravel-query-detector
+
+```sh
+# install
+composer require beyondcode/laravel-query-detector
+
+# provider
+php artisan vendor:publish --provider="BeyondCode\QueryDetector\QueryDetectorServiceProvider"
+```
+
+```diff
+# .env
+QUERY_DETECTOR_ENABLED=true
+```
