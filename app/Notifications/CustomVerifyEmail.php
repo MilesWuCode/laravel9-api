@@ -14,6 +14,6 @@ class CustomVerifyEmail extends VerifyEmail
             'code' => $verify->code,
         ]);
 
-        return env('FRONTEND_EMAIL_VERIFY_URL') . '?' . $query;
+        return config('frontend.verify_email_url') . '?' . $query;
     }
 }

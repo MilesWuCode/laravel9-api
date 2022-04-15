@@ -5,10 +5,14 @@ namespace App\Models;
 use App\Notifications\CustomVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * App\Models\User
@@ -40,10 +44,18 @@ use Laravel\Sanctum\HasApiTokens;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Verify[] $verifies
  * @property-read int|null $verifies_count
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $avatar
+ * @property-read int|null $avatar_count
+ * @property-read string $avatar_url
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Todo[] $todos
+ * @property-read int|null $todos_count
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -96,5 +108,48 @@ class User extends Authenticatable implements MustVerifyEmail
             ->where('code', $code)
             ->where('expires', '>=', now())
             ->count() === 1;
+    }
+
+    public function todos(): HasMany
+    {
+        return $this->hasMany(Todo::class);
+    }
+
+    // medialibrary
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatar')
+            ->acceptsMimeTypes(['image/jpeg'])
+            // 指定前端圖片位置
+            ->useFallbackUrl(config('frontend.url').'/images/fallback.jpg')
+            // 指定後端圖片位置
+            // ->useFallbackPath(public_path('/images/fallback.jpg'))
+            ->singleFile()
+            ->registerMediaConversions(function (Media $media) {
+                $this
+                    ->addMediaConversion('thumb');
+            });
+    }
+
+    // medialibrary
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(100)
+            ->height(100)
+            ->performOnCollections('avatar');
+    }
+
+    // 照片
+    public function avatar(): MorphMany
+    {
+        return $this->morphMany(config('media-library.media_model'), 'model')
+            ->where('collection_name', 'avatar');
+    }
+
+    // 預設值
+    public function getAvatarUrlAttribute(): string
+    {
+        return $this->getFirstMediaUrl('avatar');
     }
 }

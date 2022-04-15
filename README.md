@@ -29,9 +29,16 @@ sail composer update
 # update autoload
 sail composer dump-autoload
 
+# migrate
+sail php artisan migrate
+
 # option
+# sentry
 sail php artisan sentry:publish --dsn=xxx
 
-# view website
+# website
 open http://localhost
+
+# mailhog
+open http://localhost:8025
 ```

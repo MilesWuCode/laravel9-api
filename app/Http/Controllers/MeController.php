@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Http\Requests\MeUpdateRequest;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\JsonResponse;
@@ -20,6 +21,8 @@ class MeController extends Controller
      */
     public function show(Request $request): JsonResponse
     {
+        $this->authorize('view', $request->user());
+
         // return $request->user();
         return Fractal::create($request->user(), new UserTransformer())
             ->respond();
@@ -33,6 +36,8 @@ class MeController extends Controller
      */
     public function update(MeUpdateRequest $request): JsonResponse
     {
+        $this->authorize('update', $request->user());
+
         // * example
         // dump($request->validated());
         // dump($request->safe()->only(['name']));
@@ -53,6 +58,8 @@ class MeController extends Controller
      */
     public function changePassword(Request $request)
     {
+        $this->authorize('update', $request->user());
+
         $validator = Validator::make($request->all(), [
             'old_password' => 'required|current_password',
             'new_password' => 'required|min:8|different:old_password',

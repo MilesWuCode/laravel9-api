@@ -6,13 +6,14 @@
 -   app/Notifications/CustomVerifyEmail.php
 -   app/Models/User.php
 
-```diff
-- class User extends Authenticatable
-+ class User extends Authenticatable implements MustVerifyEmail
+```php
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-+ public function sendEmailVerificationNotification()
-+ public function verifies(): HasMany
-+ public function verifyCode(string $code): bool
+class User extends Authenticatable implements MustVerifyEmail
+
+public function sendEmailVerificationNotification()
+public function verifies(): HasMany
+public function verifyCode(string $code): bool
 ```
 
 ## sanctum
@@ -109,4 +110,97 @@ php artisan sentry:publish --dsn=xxx
 
 # test
 php artisan sentry:test
+```
+
+## spatie/laravel-medialibrary
+
+```sh
+# install
+composer require spatie/laravel-medialibrary
+
+# migration
+php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations"
+
+# migrate
+php artisan migrate
+
+# config
+php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config"
+```
+
+```php
+# config/filesystems.php
+'disks' => [
+    'media' => [
+        'driver' => 'local',
+        'root'   => public_path('media'),
+        'url'    => env('APP_URL').'/media',
+    ],
+],
+```
+
+```ini
+# .env
+# medialibrary
+MEDIA_DISK=media
+```
+
+```diff
+# public/media/.gitignore
+*
+!.gitignore
+```
+
+```php
+# app/Models/User.php
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+
+class User extends Authenticatable implements MustVerifyEmail, HasMedia
+{
+    use InteractsWithMedia;
+```
+
+## laravel/socialite
+
+```sh
+composer require laravel/socialite
+```
+
+```php
+# config/services.php
+# api不使用redirect
+'google' => [
+    'client_id' => env('GOOGLE_CLIENT_ID'),
+    'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+    'redirect' => 'http://localhost/auth/callback',
+],
+
+'facebook' => [
+    'client_id' => env('FACEBOOK_CLIENT_ID'),
+    'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+    'redirect' => 'http://localhost/auth/callback',
+],
+```
+
+```ini
+# .env
+# socialite
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+FACEBOOK_CLIENT_ID=
+FACEBOOK_CLIENT_SECRET=
+```
+
+## file upload to temporary
+
+```php
+# config/filesystems.php
+'disks' => [
+    // file upload to temporary
+    'temporary' => [
+        'driver' => 'local',
+        'root'   => storage_path('app/temporary'),
+    ],
+],
 ```

@@ -56,6 +56,17 @@ return [
             'throw' => false,
         ],
 
+        'media' => [
+            'driver' => 'local',
+            'root'   => public_path('media'),
+            'url'    => env('APP_URL').'/media',
+        ],
+
+        // file upload to temporary
+        'temporary' => [
+            'driver' => 'local',
+            'root'   => storage_path('app/temporary'),
+        ],
     ],
 
     /*
