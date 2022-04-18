@@ -18,14 +18,68 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
+    public function testGet():void
     {
         Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );
 
-        $response = $this->get('/api/me');
+        $response = $this->getJson('/api/me');
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                'email',
+                'email_verified_at',
+                'created_at',
+                'updated_at',
+            ],
+        ]);
+    }
+
+    public function testUpdate():void
+    {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
+        $response = $this->put('/api/me', [
+            'name' => $this->faker->name(),
+        ]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                'email',
+                'email_verified_at',
+                'created_at',
+                'updated_at',
+            ],
+        ]);
+    }
+
+    public function testChangePassword():void
+    {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
+        $password = $this->faker->password(6, 8);
+
+        $response = $this->put('/api/me/change-password', [
+            'old_password' => 'password',
+            'new_password' => $password,
+            'comfirm_password' => $password,
+        ]);
 
         $response->assertStatus(200);
     }
