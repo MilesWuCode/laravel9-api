@@ -1,6 +1,6 @@
 ```sh
 # model
-php artisan make:model Post --all
+php artisan make:model Post --all --api --test
 
 # factory
 php artisan make:factory PostFactory -m Post

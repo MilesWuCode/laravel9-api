@@ -161,6 +161,32 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     use InteractsWithMedia;
 ```
 
+## spatie/laravel-tags
+
+```sh
+# install
+composer require spatie/laravel-tags
+
+# migration
+php artisan vendor:publish --provider="Spatie\Tags\TagsServiceProvider" --tag="tags-migrations"
+
+# migrate
+php artisan migrate
+
+# config
+php artisan vendor:publish --provider="Spatie\Tags\TagsServiceProvider" --tag="tags-config"
+```
+
+```php
+# app/Models/Post.php
+use Spatie\Tags\HasTags;
+
+class Pos extends Model
+{
+    use HasTags;
+}
+```
+
 ## laravel/socialite
 
 ```sh
@@ -203,4 +229,37 @@ FACEBOOK_CLIENT_SECRET=
         'root'   => storage_path('app/temporary'),
     ],
 ],
+```
+
+## test
+
+```sh
+# env
+cp .env.sail .env.testing
+
+# sqlite
+touch database/database.sqlite
+```
+
+```diff
+# .env.testing
+- DB_*
+```
+
+```xml
+<!-- phpunit.xml -->
+
+<!-- enabled -->
+<env name="DB_CONNECTION" value="sqlite"/>
+
+<!-- enabled:memory or disabled:file -->
+<env name="DB_DATABASE" value=":memory:"/>
+```
+
+```sh
+# test all
+sail php artisan test --parallel --processes=4
+
+# filter
+sail php artisan test --filter UserTest
 ```

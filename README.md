@@ -42,3 +42,13 @@ open http://localhost
 # mailhog
 open http://localhost:8025
 ```
+
+## test
+
+```sh
+# test all
+sail php artisan test --parallel --processes=4
+
+# filter
+sail php artisan test --filter UserTest
+```
