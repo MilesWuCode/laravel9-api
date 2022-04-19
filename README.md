@@ -46,9 +46,11 @@ open http://localhost:8025
 ## test
 
 ```sh
-# test all
-sail php artisan test --parallel --processes=4
-
-# filter
+# test
+sail php artisan test
 sail php artisan test --filter UserTest
+
+# parallel
+sail php artisan test --parallel
+sail php artisan test --parallel --recreate-databases
 ```
