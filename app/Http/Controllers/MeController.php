@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Http\Requests\MeUpdateRequest;
+use App\Http\Requests\UpdateMeRequest;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,10 +31,10 @@ class MeController extends Controller
     /**
      * Undocumented function
      *
-     * @param MeUpdateRequest $request
+     * @param UpdateMeRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(MeUpdateRequest $request): JsonResponse
+    public function update(UpdateMeRequest $request): JsonResponse
     {
         $this->authorize('update', $request->user());
 

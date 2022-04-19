@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TodoUpdateRequest extends FormRequest
+class UpdateMeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,6 +13,7 @@ class TodoUpdateRequest extends FormRequest
      */
     public function authorize()
     {
+        // logger($this->user());
         return true;
     }
 
@@ -24,8 +25,7 @@ class TodoUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'content' => 'sometimes|required|string|max:20',
-            'active' => 'sometimes|required|boolean',
+            'name' => 'required',
         ];
     }
 }

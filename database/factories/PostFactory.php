@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Enum\PostStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +22,7 @@ class PostFactory extends Factory
             'user_id' => User::all()->random()->id,
             'title' => $this->faker->text(rand(5, 200)),
             'body' => $this->faker->paragraph(),
-            'status' => $this->faker->boolean(),
+            'status' => PostStatus::Draft->value,
             'publish_at' => $this->faker->date(),
         ];
     }

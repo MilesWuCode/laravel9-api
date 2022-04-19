@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TodoStoreRequest;
-use App\Http\Requests\TodoUpdateRequest;
+use App\Http\Requests\StoreTodoRequest;
+use App\Http\Requests\UpdateTodoRequest;
 use App\Models\Todo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -48,10 +48,10 @@ class TodoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\TodoStoreRequest  $request
+     * @param  \App\Http\Requests\StoreTodoRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(TodoStoreRequest $request): JsonResponse
+    public function store(StoreTodoRequest $request): JsonResponse
     {
         $todo = $request->user()->todos()->create($request->all());
 
@@ -81,11 +81,11 @@ class TodoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\TodoUpdateRequest  $request
+     * @param  \App\Http\Requests\UpdateTodoRequest  $request
      * @param  \App\Models\Todo  $todo
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(TodoUpdateRequest $request, Todo $todo): JsonResponse
+    public function update(UpdateTodoRequest $request, Todo $todo): JsonResponse
     {
         $todo->update($request->all());
 
