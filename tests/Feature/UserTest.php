@@ -73,7 +73,7 @@ class UserTest extends TestCase
             ['*']
         );
 
-        $password = $this->faker->password(6, 8);
+        $password = $this->faker->password(8, 10);
 
         $response = $this->put('/api/me/change-password', [
             'old_password' => 'password',

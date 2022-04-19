@@ -251,15 +251,26 @@ touch database/database.sqlite
 
 <!-- enabled -->
 <env name="DB_CONNECTION" value="sqlite"/>
+```
 
-<!-- enabled:memory or disabled:file -->
-<env name="DB_DATABASE" value=":memory:"/>
+```php
+// tests/TestCase.php
+// * setUp
+public function setUp(): void
+{
+    parent::setUp();
+
+    Artisan::call('db:seed --class=TestSeeder');
+    ...
+}
 ```
 
 ```sh
-# test all
-sail php artisan test --parallel --processes=4
-
-# filter
+# test
+sail php artisan test
 sail php artisan test --filter UserTest
+
+# parallel
+sail php artisan test --parallel
+sail php artisan test --parallel --recreate-databases
 ```
