@@ -2,7 +2,7 @@
 
 - https://github.com/MilesWuCode/laravel9-api
 
-## sail run
+## sail
 
 ```sh
 # composer install
