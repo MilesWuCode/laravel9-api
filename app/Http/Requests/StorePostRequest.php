@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\FileExist;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePostRequest extends FormRequest
@@ -13,7 +14,7 @@ class StorePostRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,16 @@ class StorePostRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|string|max:200',
+            'body' => 'nullable|max:2000',
+            'status' => 'required|boolean',
+            'publish_at' => 'nullable|date',
+            // tag:"" is clear
+            'tag' => 'sometimes|array|nullable|max:6',
+            'tag.*' => 'required|string',
+            // gallery:file name
+            'gallery' => 'sometimes|array|max:10',
+            'gallery.*' => ['required', 'string', new FileExist],
         ];
     }
 }

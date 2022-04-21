@@ -187,6 +187,50 @@ class Pos extends Model
 }
 ```
 
+## beyondcode/laravel-comments
+
+```sh
+# install
+composer require beyondcode/laravel-comments
+
+# migrations
+php artisan vendor:publish --provider="BeyondCode\Comments\CommentsServiceProvider" --tag="migrations"
+
+# migrate
+php artisan migrate
+
+# config
+php artisan vendor:publish --provider="BeyondCode\Comments\CommentsServiceProvider" --tag="config"
+```
+
+```php
+// app/Models/Post.php
+use BeyondCode\Comments\Traits\HasComments;
+
+class Post extends Model
+{
+    use HasComments;
+    ...
+}
+
+// app/Models/User.php
+// Auto Approve Comments
+use BeyondCode\Comments\Contracts\Commentator;
+
+class User extends Authenticatable implements Commentator
+{
+    /**
+     * Check if a comment for a specific model needs to be approved.
+     * @param mixed $model
+     * @return bool
+     */
+    public function needsCommentApproval($model): bool
+    {
+        return false;
+    }
+}
+```
+
 ## laravel/socialite
 
 ```sh

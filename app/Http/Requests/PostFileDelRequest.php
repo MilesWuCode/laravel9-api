@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePostRequest extends FormRequest
+class PostFileDelRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,14 +23,11 @@ class UpdatePostRequest extends FormRequest
      */
     public function rules()
     {
+        $mediaClass = config('media-library.media_model');
+
         return [
-            'title' => 'sometimes|required|string|max:200',
-            'body' => 'sometimes|nullable|max:2000',
-            'status' => 'sometimes|required|boolean',
-            'publish_at' => 'sometimes|nullable|date',
-            // tag:"" is clear
-            'tag' => 'sometimes|array|nullable|max:6',
-            'tag.*' => 'required',
+            'collection' => 'required|in:gallery',
+            'media_id' => ['required', 'exists:' . $mediaClass . ',id'],
         ];
     }
 }

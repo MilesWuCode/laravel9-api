@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\FileExist;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePostRequest extends FormRequest
+class PostFileAddRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +25,8 @@ class UpdatePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'sometimes|required|string|max:200',
-            'body' => 'sometimes|nullable|max:2000',
-            'status' => 'sometimes|required|boolean',
-            'publish_at' => 'sometimes|nullable|date',
-            // tag:"" is clear
-            'tag' => 'sometimes|array|nullable|max:6',
-            'tag.*' => 'required',
+            'collection' => 'required|in:gallery',
+            'file' => ['required', new FileExist],
         ];
     }
 }
