@@ -26,7 +26,7 @@ class UpdatePostRequest extends FormRequest
         return [
             'title' => 'sometimes|required|string|max:200',
             'body' => 'sometimes|nullable|max:2000',
-            'status' => 'sometimes|required|boolean',
+            'status' => 'required|in:draft,enable,disable',
             'publish_at' => 'sometimes|nullable|date',
             // tag:"" is clear
             'tag' => 'sometimes|array|nullable|max:6',

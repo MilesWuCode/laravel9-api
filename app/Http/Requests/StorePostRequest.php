@@ -27,7 +27,7 @@ class StorePostRequest extends FormRequest
         return [
             'title' => 'required|string|max:200',
             'body' => 'nullable|max:2000',
-            'status' => 'required|boolean',
+            'status' => 'required|in:draft,enable,disable',
             'publish_at' => 'nullable|date',
             // tag:"" is clear
             'tag' => 'sometimes|array|nullable|max:6',

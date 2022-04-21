@@ -70,10 +70,9 @@ class Post extends Model implements HasMedia
         'publish_at',
     ];
 
-    // protected $attributes = [
-    //     'status' => true,
-    //     'publish_at' => null,
-    // ];
+    protected $attributes = [
+        'publish_at' => null,
+    ];
 
     protected $casts = [
         'publish_at' => 'date',
@@ -132,7 +131,7 @@ class Post extends Model implements HasMedia
 
     public function setTag(array $tag = []): void
     {
-        $this->syncTagsWithType($tag, 'blog');
+        $this->syncTagsWithType($tag, 'post');
     }
 
     public function setFile(string $collection, array $files = []): void

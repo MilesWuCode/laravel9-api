@@ -140,7 +140,7 @@ class PostController extends Controller
     {
         $post->setFile($request->input('collection'), [$request->input('file')]);
 
-        return Fractal::create($post, new BlogTransformer())
+        return Fractal::create($post, new PostTransformer())
             ->parseIncludes($request->input('collection'))
             ->respond();
     }

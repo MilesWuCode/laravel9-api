@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\TodoController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\FileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,7 @@ Route::controller(MeController::class)->middleware('auth:sanctum')->group(functi
 });
 
 Route::middleware('auth:sanctum')->apiResource('todo', TodoController::class);
+Route::middleware('auth:sanctum')->apiResource('post', PostController::class);
 
 //* Socialite singin
 Route::post('/socialite/singin', [SocialiteController::class, 'singin']);

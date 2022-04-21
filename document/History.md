@@ -181,7 +181,7 @@ php artisan vendor:publish --provider="Spatie\Tags\TagsServiceProvider" --tag="t
 # app/Models/Post.php
 use Spatie\Tags\HasTags;
 
-class Pos extends Model
+class Post extends Model
 {
     use HasTags;
 }
