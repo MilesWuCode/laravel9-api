@@ -626,6 +626,618 @@
 					]
 				},
 				{
+					"name": "post",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{http}}://{{domain}}/api/post?page=1&limit=2&sort=id_desc&include=tags",
+									"protocol": "{{http}}",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"post"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "2"
+										},
+										{
+											"key": "sort",
+											"value": "id_desc"
+										},
+										{
+											"key": "include",
+											"value": "tags"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "{{http}}://{{domain}}/api/post/1",
+									"protocol": "{{http}}",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"post",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "{{http}}://{{domain}}/api/post",
+									"protocol": "{{http}}",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"post"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "base",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "title",
+													"value": "this is title",
+													"type": "text"
+												},
+												{
+													"key": "body",
+													"value": "this is body...",
+													"type": "text"
+												},
+												{
+													"key": "status",
+													"value": "draft",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost/api/post",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"path": [
+												"api",
+												"post"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								},
+								{
+									"name": "publish_at",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "title",
+													"value": "this is title",
+													"type": "text"
+												},
+												{
+													"key": "body",
+													"value": "this is body...",
+													"type": "text"
+												},
+												{
+													"key": "publish_at",
+													"value": "2021-11-08",
+													"type": "text"
+												},
+												{
+													"key": "status",
+													"value": "draft",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{http}}://{{domain}}/api/post",
+											"protocol": "{{http}}",
+											"host": [
+												"{{domain}}"
+											],
+											"path": [
+												"api",
+												"post"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								},
+								{
+									"name": "tag",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "title",
+													"value": "this is title",
+													"type": "text"
+												},
+												{
+													"key": "body",
+													"value": "this is body...",
+													"type": "text"
+												},
+												{
+													"key": "status",
+													"value": "draft",
+													"type": "text"
+												},
+												{
+													"key": "tag[0]",
+													"value": "tag1",
+													"type": "text"
+												},
+												{
+													"key": "tag[1]",
+													"value": "tag2",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{http}}://{{domain}}/api/post",
+											"protocol": "{{http}}",
+											"host": [
+												"{{domain}}"
+											],
+											"path": [
+												"api",
+												"post"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								},
+								{
+									"name": "gallery",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "title",
+													"value": "this is title",
+													"type": "text"
+												},
+												{
+													"key": "body",
+													"value": "this is body...",
+													"type": "text"
+												},
+												{
+													"key": "status",
+													"value": "draft",
+													"type": "text"
+												},
+												{
+													"key": "gallery[0]",
+													"value": "X00B4B2IATxVKH21YnjnuuftX4lCesEphFKTbSuM.jpg",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{http}}://{{domain}}/api/post",
+											"protocol": "{{http}}",
+											"host": [
+												"{{domain}}"
+											],
+											"path": [
+												"api",
+												"post"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								}
+							]
+						},
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "title",
+											"value": "this is title ...",
+											"type": "text"
+										},
+										{
+											"key": "body",
+											"value": "this is body...",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "enable",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{http}}://{{domain}}/api/post/1?include=tag,gallery",
+									"protocol": "{{http}}",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"post",
+										"1"
+									],
+									"query": [
+										{
+											"key": "include",
+											"value": "tag,gallery"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "base",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "title",
+													"value": "this is title ...",
+													"type": "text"
+												},
+												{
+													"key": "body",
+													"value": "this is body...",
+													"type": "text"
+												},
+												{
+													"key": "status",
+													"value": "enable",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{http}}://{{domain}}/api/post/1?include=tag,gallery",
+											"protocol": "{{http}}",
+											"host": [
+												"{{domain}}"
+											],
+											"path": [
+												"api",
+												"post",
+												"1"
+											],
+											"query": [
+												{
+													"key": "include",
+													"value": "tag,gallery"
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								},
+								{
+									"name": "tag",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "title",
+													"value": "this is title",
+													"type": "text"
+												},
+												{
+													"key": "body",
+													"value": "this is body...",
+													"type": "text"
+												},
+												{
+													"key": "status",
+													"value": "draft",
+													"type": "text"
+												},
+												{
+													"key": "tag[0]",
+													"value": "tag3",
+													"type": "text"
+												},
+												{
+													"key": "tag[1]",
+													"value": "tag4",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{http}}://{{domain}}/api/post/1?include=tag,gallery",
+											"protocol": "{{http}}",
+											"host": [
+												"{{domain}}"
+											],
+											"path": [
+												"api",
+												"post",
+												"1"
+											],
+											"query": [
+												{
+													"key": "include",
+													"value": "tag,gallery"
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								}
+							]
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "{{http}}://{{domain}}/api/post/1",
+									"protocol": "{{http}}",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"post",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "file",
 					"item": [
 						{
