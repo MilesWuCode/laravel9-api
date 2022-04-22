@@ -22,49 +22,68 @@ use Illuminate\Support\Facades\Route;
 */
 
 // * auth
-Route::controller(AuthController::class)->middleware('throttle:6,1')->group(function () {
-    Route::post('/auth/register', 'register')->name('auth.register');
-    Route::post('/auth/send-verify-email', 'sendVerifyEmail')->name('auth.send-verify-email');
-    Route::post('/auth/verify-email', 'verifyEmail')->name('auth.verify-email');
-    Route::post('/auth/login', 'login')->name('auth.login');
-    Route::middleware('auth:sanctum')->post('/auth/logout', 'logout')->name('auth.logout');
-});
+Route::controller(AuthController::class)
+    ->middleware('throttle:6,1')
+    ->group(function () {
+        Route::post('/auth/register', 'register')->name('auth.register');
+        Route::post('/auth/send-verify-email', 'sendVerifyEmail')->name('auth.send-verify-email');
+        Route::post('/auth/verify-email', 'verifyEmail')->name('auth.verify-email');
+        Route::post('/auth/login', 'login')->name('auth.login');
+        Route::middleware('auth:sanctum')->post('/auth/logout', 'logout')->name('auth.logout');
+    });
 
 // * me
-Route::controller(MeController::class)->middleware(['auth:sanctum', 'throttle:6,1'])->group(function () {
-    Route::get('/me', 'show')->name('me.show');
-    Route::put('/me', 'update')->name('me.update');
-    Route::put('/me/change-password', 'changePassword')->name('me.change-password');
-});
+Route::controller(MeController::class)
+    ->middleware(['auth:sanctum', 'throttle:6,1'])
+    ->group(function () {
+        Route::get('/me', 'show')->name('me.show');
+        Route::put('/me', 'update')->name('me.update');
+        Route::put('/me/change-password', 'changePassword')->name('me.change-password');
+    });
 
 // * todo
-Route::middleware(['auth:sanctum', 'throttle:6,1'])->apiResource('todo', TodoController::class);
+Route::middleware(['auth:sanctum', 'throttle:6,1'])
+    ->apiResource('todo', TodoController::class);
 
 // * post
-Route::apiResource('post', PostController::class)->middleware(['auth:sanctum', 'throttle:6,1']);
-Route::name('post.')->controller(PostController::class)->middleware(['auth:sanctum', 'throttle:6,1'])->group(function () {
-    // * like
-    Route::post('/post/{post}/like', 'like')->name('like');
-    // * file
-    Route::post('/post/{post}/file', 'fileAdd')->name('file.add');
-    Route::delete('/post/{post}/file', 'fileDel')->name('file.del');
-    // * comment
-    Route::post('/post/{post}/comment', 'storeComment')->name('comment.store');
-    Route::get('/post/{post}/comment', 'comment')->withoutMiddleware('auth:sanctum')->name('comment.list');
-});
+Route::apiResource('post', PostController::class)
+    ->middleware(['auth:sanctum', 'throttle:6,1']);
+
+Route::name('post.')->controller(PostController::class)
+    ->middleware(['auth:sanctum', 'throttle:6,1'])
+    ->group(function () {
+        // * like
+        Route::post('/post/{post}/like', 'like')->name('like');
+        // * file
+        Route::post('/post/{post}/file', 'fileAdd')->name('file.add');
+        Route::delete('/post/{post}/file', 'fileDel')->name('file.del');
+        // * comment
+        Route::post('/post/{post}/comment', 'storeComment')->name('comment.store');
+        Route::get('/post/{post}/comment', 'comment')->withoutMiddleware('auth:sanctum')->name('comment.list');
+    });
 
 // * comment
-Route::apiResource('comment', CommentController::class)->only(['show', 'update', 'destroy']);
-Route::name('comment.')->controller(CommentController::class)->middleware(['auth:sanctum', 'throttle:6,1'])->group(function () {
-    // * like
-    Route::post('/comment/{post}/like', 'like')->name('like');
-});
+Route::apiResource('comment', CommentController::class)
+    ->middleware(['auth:sanctum', 'throttle:6,1'])
+    ->only(['show', 'update', 'destroy']);
+
+Route::name('comment.')
+    ->controller(CommentController::class)
+    ->middleware(['auth:sanctum', 'throttle:6,1'])
+    ->group(function () {
+        // * like
+        Route::post('/comment/{comment}/like', 'like')->name('like');
+    });
+
+// * reply(wip)
 
 // * Socialite singin
-Route::post('/socialite/singin', [SocialiteController::class, 'singin'])->name('socialite.singin');
+Route::post('/socialite/singin', [SocialiteController::class, 'singin'])
+    ->name('socialite.singin');
 
 // * Temporary file
-Route::middleware('auth:sanctum')->post('/file', [FileController::class, 'file'])->name('file.temporary.upload');
+Route::middleware('auth:sanctum')->post('/file', [FileController::class, 'file'])
+    ->name('file.temporary.upload');
 
 // * Demo upload-file
 Route::post('/demo/upload-file', function (Request $request) {

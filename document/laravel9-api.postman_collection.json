@@ -1489,7 +1489,7 @@
 									"urlencoded": [
 										{
 											"key": "type",
-											"value": "",
+											"value": "Like",
 											"description": "null, Like, Dislike",
 											"type": "text"
 										}
@@ -1516,6 +1516,42 @@
 				{
 					"name": "comment",
 					"item": [
+						{
+							"name": "show",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{http}}://{{domain}}/api/comment/1",
+									"protocol": "{{http}}",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"comment",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
 						{
 							"name": "delete",
 							"request": {
@@ -1551,6 +1587,54 @@
 										"api",
 										"comment",
 										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "like",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "type",
+											"value": "Like",
+											"description": "null, Like, Dislike",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{http}}://{{domain}}/api/comment/1/like",
+									"protocol": "{{http}}",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"comment",
+										"1",
+										"like"
 									]
 								}
 							},
