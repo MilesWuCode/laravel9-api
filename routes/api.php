@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// * auth
 Route::controller(AuthController::class)->middleware('throttle:6,1')->group(function () {
     Route::post('/auth/register', 'register')->name('auth.register');
     Route::post('/auth/send-verify-email', 'sendVerifyEmail')->name('auth.send-verify-email');
@@ -27,22 +28,30 @@ Route::controller(AuthController::class)->middleware('throttle:6,1')->group(func
     Route::middleware('auth:sanctum')->post('/auth/logout', 'logout')->name('auth.logout');
 });
 
-Route::controller(MeController::class)->middleware('auth:sanctum')->group(function () {
+// * me
+Route::controller(MeController::class)->middleware(['auth:sanctum', 'throttle:6,1'])->group(function () {
     Route::get('/me', 'show')->name('me.show');
     Route::put('/me', 'update')->name('me.update');
     Route::put('/me/change-password', 'changePassword')->name('me.change-password');
 });
 
-Route::middleware('auth:sanctum')->apiResource('todo', TodoController::class);
-Route::middleware('auth:sanctum')->apiResource('post', PostController::class);
+// * todo
+Route::middleware(['auth:sanctum', 'throttle:6,1'])->apiResource('todo', TodoController::class);
 
-//* Socialite singin
+// * post
+Route::middleware(['auth:sanctum', 'throttle:6,1'])->apiResource('post', PostController::class);
+Route::controller(PostController::class)->middleware(['auth:sanctum', 'throttle:6,1'])->group(function () {
+    Route::post('/post/{post}/file', 'fileAdd')->name('post.file.add');
+    Route::delete('/post/{post}/file', 'fileDel')->name('post.file.del');
+});
+
+// * Socialite singin
 Route::post('/socialite/singin', [SocialiteController::class, 'singin']);
 
-//* Temporary File
-Route::middleware('auth:sanctum')->post('/file', [FileController::class, 'file'])->name('temporary.file.upload');
+// * Temporary file
+Route::middleware('auth:sanctum')->post('/file', [FileController::class, 'file'])->name('file.temporary.upload');
 
-//* Demo
+// * Demo file
 // Route::post('/demo/upload', function (Request $request) {
 //     $file = $request->file('file');
 
