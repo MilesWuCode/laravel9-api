@@ -167,6 +167,25 @@ class User extends Authenticatable implements Commentator, HasMedia, MustVerifyE
         return $this->getFirstMediaUrl('avatar');
     }
 
+    // Like,Dislike,null
+    public function setLike($reactant, ?string $reactionType)
+    {
+        $reacterFacade = $this->viaLoveReacter();
+
+        $types = ['Like', 'Dislike'];
+
+        foreach ($types as $type) {
+            if ($type !== $reactionType && $reacterFacade->hasReactedTo($reactant, $type)) {
+                $reacterFacade->unreactTo($reactant, $type);
+            }
+        }
+
+        if ($reactionType && $reacterFacade->hasNotReactedTo($reactant, $reactionType)) {
+            $reacterFacade->reactTo($reactant, $reactionType);
+        }
+    }
+
+    // Comment
     /**
      * Check if a comment for a specific model needs to be approved.
      * @param mixed $model

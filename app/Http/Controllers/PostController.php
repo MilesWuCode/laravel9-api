@@ -7,7 +7,7 @@ use App\Http\Requests\PostFileDelRequest;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Requests\StoreCommentRequest;
-// use App\Http\Requests\LikeRequest;
+use App\Http\Requests\LikeRequest;
 use App\Http\Requests\ListRequest;
 use App\Models\Post;
 use App\Transformers\PostTransformer;
@@ -138,6 +138,8 @@ class PostController extends Controller
      */
     public function fileAdd(PostFileAddRequest $request, Post $post): JsonResponse
     {
+        $this->authorize('update', $post);
+
         $post->setFile($request->input('collection'), [$request->input('file')]);
 
         return Fractal::create($post, new PostTransformer())
@@ -154,6 +156,8 @@ class PostController extends Controller
      */
     public function fileDel(PostFileDelRequest $request, Post $post): JsonResponse
     {
+        $this->authorize('update', $post);
+
         // 配合 PostFileDelRequest 檢查 media_id 是否存在於資料表
         // $mediaItems = $post->getMedia($request->input('collection'));
 
@@ -218,18 +222,18 @@ class PostController extends Controller
      * 設定喜歡或不喜歡
      *
      * @param LikeRequest $request
-     * @param int $id
-     * @return void
+     * @param \App\Models\Post  $post
+     * @return JsonResponse
      */
-    public function like(LikeRequest $request, int $id): JsonResponse
+    public function like(LikeRequest $request, Post $post): JsonResponse
     {
         // ? like_count,dislike_count數字不同步問題
         // TODO:修改.env的QUEUE_CONNECTION=sync才會同步
         // TODO:思考該不該顯示數字
 
-        $post = Post::with([
-            'loveReactant.reactions',
-        ])->find($id);
+        // $post = Post::with([
+        //     'loveReactant.reactions',
+        // ])->find($id);
 
         $request->user()
             ->setLike($post, $request->input('type', ''));

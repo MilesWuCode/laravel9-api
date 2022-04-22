@@ -38,6 +38,8 @@ sail php artisan migrate
 # sentry
 sail php artisan sentry:publish --dsn=xxx
 
+sail php artisan queue:work
+
 # website
 open http://localhost
 
