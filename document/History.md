@@ -204,14 +204,8 @@ php artisan vendor:publish --provider="BeyondCode\Comments\CommentsServiceProvid
 ```
 
 ```php
-// app/Models/Post.php
-use BeyondCode\Comments\Traits\HasComments;
-
-class Post extends Model
-{
-    use HasComments;
-    ...
-}
+// config/comments.php
+'comment_class' => \App\Models\Comment::class,
 
 // app/Models/User.php
 // Auto Approve Comments
@@ -229,12 +223,76 @@ class User extends Authenticatable implements Commentator
         return false;
     }
 }
+
+// app/Models/Post.php
+use BeyondCode\Comments\Traits\HasComments;
+
+class Post extends Model
+{
+    use HasComments;
+    ...
+}
 ```
 
 ## spatie/laravel-comments
 
 ```sh
 composer require spatie/laravel-comments
+```
+
+## cybercog/laravel-love
+
+```sh
+# install
+composer require cybercog/laravel-love
+
+# migrate
+php artisan migrate
+
+# default: like, dislike
+php artisan love:reaction-type-add --default
+
+# set model reacterable
+
+# migration file
+php artisan love:setup-reacterable --model="App\Models\User" --nullable
+
+# migrate
+php artisan migrate
+
+# create love_reacters table data
+php artisan love:register-reacters --model="App\Models\User"
+
+# set model reactable
+
+# migration file
+php artisan love:setup-reactable --model="App\Models\Post" --nullable
+
+# migrate
+php artisan migrate
+
+# create love_reactants table data
+php artisan love:register-reactants --model="App\Models\Post"
+```
+
+### set model
+
+```php
+// set model reacterable
+use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
+use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
+
+class User extends Authenticatable implements ReacterableInterface
+{
+    use Reacterable;
+
+// set model reactable
+use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
+use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
+
+class Post extends Model implements HasMedia, ReactableInterface
+{
+    use Reactable;
 ```
 
 ## laravel/socialite

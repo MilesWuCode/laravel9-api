@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use BeyondCode\Comments\Traits\HasComments;
-// use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
-// use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
+use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
+use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-// use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -53,14 +53,24 @@ use Spatie\Tags\HasTags;
  * @method static \Illuminate\Database\Eloquent\Builder|Post withAllTagsOfAnyType($tags)
  * @method static \Illuminate\Database\Eloquent\Builder|Post withAnyTags(\ArrayAccess|\Spatie\Tags\Tag|array $tags, ?string $type = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Post withAnyTagsOfAnyType($tags)
+ * @property int|null $love_reactant_id
+ * @property-read int $dislike_count
+ * @property-read string $like
+ * @property-read int $like_count
+ * @property-read \Cog\Laravel\Love\Reactant\Models\Reactant|null $loveReactant
+ * @method static \Illuminate\Database\Eloquent\Builder|Post joinReactionCounterOfType(string $reactionTypeName, ?string $alias = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post joinReactionTotal(?string $alias = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereLoveReactantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereNotReactedBy(\Cog\Contracts\Love\Reacterable\Models\Reacterable $reacterable, ?string $reactionTypeName = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereReactedBy(\Cog\Contracts\Love\Reacterable\Models\Reacterable $reacterable, ?string $reactionTypeName = null)
  */
-class Post extends Model implements HasMedia
+class Post extends Model implements HasMedia, ReactableInterface
 {
     use HasTags;
     use HasComments;
     use HasFactory;
     use InteractsWithMedia;
-    // use Reactable;
+    use Reactable;
 
     protected $fillable = [
         'user_id',
@@ -156,31 +166,31 @@ class Post extends Model implements HasMedia
         }
     }
 
-    // public function getLikeCountAttribute(): int
-    // {
-    //     // list n+1: ->with(['tags', 'loveReactant.reactionCounters', 'loveReactant.reactionTotal'])
-    //     return $this->viaLoveReactant()
-    //         ->getReactionCounterOfType('Like')
-    //         ->getCount();
-    // }
+    public function getLikeCountAttribute(): int
+    {
+        // list n+1: ->with(['tags', 'loveReactant.reactionCounters', 'loveReactant.reactionTotal'])
+        return $this->viaLoveReactant()
+            ->getReactionCounterOfType('Like')
+            ->getCount();
+    }
 
-    // public function getDislikeCountAttribute(): int
-    // {
-    //     // list n+1: ->with(['tags', 'loveReactant.reactionCounters', 'loveReactant.reactionTotal'])
-    //     return $this->viaLoveReactant()
-    //         ->getReactionCounterOfType('Dislike')
-    //         ->getCount();
-    // }
+    public function getDislikeCountAttribute(): int
+    {
+        // list n+1: ->with(['tags', 'loveReactant.reactionCounters', 'loveReactant.reactionTotal'])
+        return $this->viaLoveReactant()
+            ->getReactionCounterOfType('Dislike')
+            ->getCount();
+    }
 
-    // public function getLikeAttribute(): string
-    // {
-    //     // list n+1: ->with(['loveReactant.reactions'])
-    //     if (Auth::check() && $this->viaLoveReactant()->isReactedBy(Auth::user(), 'Like')) {
-    //         return 'Like';
-    //     } elseif (Auth::check() && $this->viaLoveReactant()->isReactedBy(Auth::user(), 'Dislike')) {
-    //         return 'Dislike';
-    //     }
+    public function getLikeAttribute(): string
+    {
+        // list n+1: ->with(['loveReactant.reactions'])
+        if (Auth::check() && $this->viaLoveReactant()->isReactedBy(Auth::user(), 'Like')) {
+            return 'Like';
+        } elseif (Auth::check() && $this->viaLoveReactant()->isReactedBy(Auth::user(), 'Dislike')) {
+            return 'Dislike';
+        }
 
-    //     return '';
-    // }
+        return '';
+    }
 }

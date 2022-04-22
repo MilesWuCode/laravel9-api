@@ -56,3 +56,12 @@ sail php artisan test --filter UserTest
 sail php artisan test --parallel
 sail php artisan test --parallel --recreate-databases
 ```
+
+## ide-helper
+```sh
+# generate
+php artisan ide-helper:generate
+
+# model
+php artisan ide-helper:models
+```

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Notifications\CustomVerifyEmail;
 use BeyondCode\Comments\Contracts\Commentator;
+use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
+use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -52,11 +54,17 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read int|null $media_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Todo[] $todos
  * @property-read int|null $todos_count
+ * @property int|null $love_reacter_id
+ * @property-read \Cog\Laravel\Love\Reacter\Models\Reacter|null $loveReacter
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Post[] $posts
+ * @property-read int|null $posts_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLoveReacterId($value)
  */
-class User extends Authenticatable implements Commentator, HasMedia, MustVerifyEmail
+class User extends Authenticatable implements Commentator, HasMedia, MustVerifyEmail, ReacterableInterface
 {
     use HasApiTokens, HasFactory, Notifiable;
     use InteractsWithMedia;
+    use Reacterable;
 
     /**
      * The attributes that are mass assignable.

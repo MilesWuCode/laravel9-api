@@ -19,8 +19,22 @@ class CommentFactory extends Factory
             'commentable_type' => Post::class,
             'commentable_id' => Post::all()->random()->id,
             'comment' => $this->faker->text(rand(5, 20)),
-            'is_approved' => $this->faker->boolean(),
+            'is_approved' => false,
             'user_id' => User::all()->random()->id,
         ];
+    }
+
+    /**
+     * approved
+     *
+     * @return static
+     */
+    public function approved()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_approved' => true,
+            ];
+        });
     }
 }
