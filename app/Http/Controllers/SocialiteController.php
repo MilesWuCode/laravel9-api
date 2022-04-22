@@ -10,6 +10,12 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialiteController extends Controller
 {
+    /**
+     * 第三方用戶singin
+     *
+     * @param \App\Http\Requests\SocialiteRequest $request
+     * @return JsonResponse
+     */
     public function singin(SocialiteRequest $request): JsonResponse
     {
         $driver = $request->input('driver');
@@ -20,34 +26,26 @@ class SocialiteController extends Controller
 
         $user = User::where('email', $socialiteUser->email)->first();
 
+        // $socialiteUser->token
+        // $socialiteUser->refreshToken
+        logger($socialiteUser);
+
+        // * wip
         if ($user) {
-            // $user->update([
-            //     'github_token' => $socialiteUser->token,
-            //     'github_refresh_token' => $socialiteUser->refreshToken,
-            // ]);
+            // 更新資料
         } else {
+            // 註冊
             $user = User::create([
                 'name' => $socialiteUser->name,
                 'email' => $socialiteUser->email,
                 'password' => '',
-                // 'github_id' => $socialiteUser->id,
-                // 'github_token' => $socialiteUser->token,
-                // 'github_refresh_token' => $socialiteUser->refreshToken,
             ]);
 
             $user->markEmailAsVerified();
         }
 
-        $token = $user->createToken('Laravel Password Grant Client');
+        $token = $request->user()->createToken('normal');
 
-        $accessToken = $token->accessToken;
-
-        $expires_at = $token->token->expires_at->diffInSeconds(Carbon::now());
-
-        return response()->json([
-            'access_token' => $accessToken,
-            'expires_in' => $expires_at,
-            'token_type' => 'Bearer',
-        ], 200);
+        return response()->json(['token' => $token->plainTextToken], 200);
     }
 }
