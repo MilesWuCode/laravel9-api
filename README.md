@@ -38,6 +38,7 @@ sail php artisan migrate
 # sentry
 sail php artisan sentry:publish --dsn=xxx
 
+# queue
 sail php artisan queue:work
 
 # website

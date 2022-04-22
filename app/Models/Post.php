@@ -88,11 +88,13 @@ class Post extends Model implements HasMedia, ReactableInterface
         'publish_at' => 'date',
     ];
 
+    // relationships
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    // medialibrary
     public function registerMediaCollections(): void
     {
         /**
@@ -125,6 +127,7 @@ class Post extends Model implements HasMedia, ReactableInterface
             });
     }
 
+    // medialibrary
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
@@ -133,17 +136,20 @@ class Post extends Model implements HasMedia, ReactableInterface
             ->performOnCollections('gallery');
     }
 
+    // medialibrary,relationships
     public function gallery(): MorphMany
     {
         return $this->morphMany(config('media-library.media_model'), 'model')
             ->where('collection_name', 'gallery');
     }
 
+    // method
     public function setTag(array $tag = []): void
     {
         $this->syncTagsWithType($tag, 'post');
     }
 
+    // method
     public function setFile(string $collection, array $files = []): void
     {
         foreach ($files as $file) {
@@ -153,6 +159,7 @@ class Post extends Model implements HasMedia, ReactableInterface
         }
     }
 
+    // method
     public function delFile(string $collection, int $media_id): void
     {
         $mediaItems = $this->getMedia($collection);
@@ -166,6 +173,7 @@ class Post extends Model implements HasMedia, ReactableInterface
         }
     }
 
+    // attribute
     public function getLikeCountAttribute(): int
     {
         // list n+1: ->with(['tags', 'loveReactant.reactionCounters', 'loveReactant.reactionTotal'])
@@ -174,6 +182,7 @@ class Post extends Model implements HasMedia, ReactableInterface
             ->getCount();
     }
 
+    // attribute
     public function getDislikeCountAttribute(): int
     {
         // list n+1: ->with(['tags', 'loveReactant.reactionCounters', 'loveReactant.reactionTotal'])
@@ -182,6 +191,7 @@ class Post extends Model implements HasMedia, ReactableInterface
             ->getCount();
     }
 
+    // attribute
     public function getLikeAttribute(): string
     {
         // list n+1: ->with(['loveReactant.reactions'])

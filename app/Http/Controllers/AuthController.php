@@ -87,7 +87,12 @@ class AuthController extends Controller
             abort(403, 'Your email address is verified.');
         }
 
-        if (!$user->verifyCode((string) $request->code)) {
+        $count = $user->verifies()
+            ->where('code', $request->code)
+            ->where('expires', '>=', now())
+            ->count();
+
+        if ($count !== 1) {
             abort(401, 'Unauthorized');
         }
 

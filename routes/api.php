@@ -55,6 +55,10 @@ Route::name('post.')->controller(PostController::class)->middleware(['auth:sanct
 
 // * comment
 Route::apiResource('comment', CommentController::class)->only(['show', 'update', 'destroy']);
+Route::name('comment.')->controller(CommentController::class)->middleware(['auth:sanctum', 'throttle:6,1'])->group(function () {
+    // * like
+    Route::post('/comment/{post}/like', 'like')->name('like');
+});
 
 // * Socialite singin
 Route::post('/socialite/singin', [SocialiteController::class, 'singin'])->name('socialite.singin');

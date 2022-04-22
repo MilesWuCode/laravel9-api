@@ -45,6 +45,8 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereUserId($value)
  * @mixin \Eloquent
+ * @property int|null $love_reactant_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Comment whereLoveReactantId($value)
  */
 class Comment extends Model implements ReactableInterface
 {

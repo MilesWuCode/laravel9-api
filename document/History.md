@@ -13,7 +13,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
 public function sendEmailVerificationNotification()
 public function verifies(): HasMany
-public function verifyCode(string $code): bool
 ```
 
 ## sanctum

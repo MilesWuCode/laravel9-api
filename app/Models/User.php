@@ -106,29 +106,6 @@ class User extends Authenticatable implements Commentator, HasMedia, MustVerifyE
         $this->notify(new CustomVerifyEmail);
     }
 
-    public function verifies(): HasMany
-    {
-        return $this->hasMany(Verify::class);
-    }
-
-    public function verifyCode(string $code): bool
-    {
-        return $this->verifies()
-            ->where('code', $code)
-            ->where('expires', '>=', now())
-            ->count() === 1;
-    }
-
-    public function todos(): HasMany
-    {
-        return $this->hasMany(Todo::class);
-    }
-
-    public function posts(): HasMany
-    {
-        return $this->hasMany(Post::class);
-    }
-
     // medialibrary
     public function registerMediaCollections(): void
     {
@@ -154,20 +131,38 @@ class User extends Authenticatable implements Commentator, HasMedia, MustVerifyE
             ->performOnCollections('avatar');
     }
 
-    // 照片
+    // relationships
+    public function verifies(): HasMany
+    {
+        return $this->hasMany(Verify::class);
+    }
+
+    // relationships
+    public function todos(): HasMany
+    {
+        return $this->hasMany(Todo::class);
+    }
+
+    // relationships
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    // relationships
     public function avatar(): MorphMany
     {
         return $this->morphMany(config('media-library.media_model'), 'model')
             ->where('collection_name', 'avatar');
     }
 
-    // 預設值
+    // attribute
     public function getAvatarUrlAttribute(): string
     {
         return $this->getFirstMediaUrl('avatar');
     }
 
-    // Like,Dislike,null
+    // method
     public function setLike($reactant, ?string $reactionType)
     {
         $reacterFacade = $this->viaLoveReacter();
@@ -185,7 +180,7 @@ class User extends Authenticatable implements Commentator, HasMedia, MustVerifyE
         }
     }
 
-    // Comment
+    // comment
     /**
      * Check if a comment for a specific model needs to be approved.
      * @param mixed $model
