@@ -6,12 +6,12 @@ use App\Http\Requests\PostFileAddRequest;
 use App\Http\Requests\PostFileDelRequest;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-// use App\Http\Requests\CommentStoreRequest;
+use App\Http\Requests\StoreCommentRequest;
 // use App\Http\Requests\LikeRequest;
 use App\Http\Requests\ListRequest;
 use App\Models\Post;
 use App\Transformers\PostTransformer;
-// use App\Transformers\CommentTransformer;
+use App\Transformers\CommentTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -182,7 +182,7 @@ class PostController extends Controller
      * @param \App\Models\Post  $post
      * @return JsonResponse
      */
-    public function comments(ListRequest $request, Post $post): JsonResponse
+    public function comment(ListRequest $request, Post $post): JsonResponse
     {
         $page = $request->input('page', 1);
         $limit = $request->input('limit', 5);
@@ -202,11 +202,11 @@ class PostController extends Controller
     /**
      * 評論新增
      *
-     * @param CommentStoreRequest $request
+     * @param \App\Http\Requests\StoreCommentRequest $request
      * @param \App\Models\Post  $post
      * @return JsonResponse
      */
-    public function commentCreate(CommentStoreRequest $request, Post $post): JsonResponse
+    public function storeComment(StoreCommentRequest $request, Post $post): JsonResponse
     {
         $comment = $post->comment($request->input('comment'));
 

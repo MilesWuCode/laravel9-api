@@ -39,14 +39,22 @@ Route::controller(MeController::class)->middleware(['auth:sanctum', 'throttle:6,
 Route::middleware(['auth:sanctum', 'throttle:6,1'])->apiResource('todo', TodoController::class);
 
 // * post
-Route::middleware(['auth:sanctum', 'throttle:6,1'])->apiResource('post', PostController::class);
-Route::controller(PostController::class)->middleware(['auth:sanctum', 'throttle:6,1'])->group(function () {
-    Route::post('/post/{post}/file', 'fileAdd')->name('post.file.add');
-    Route::delete('/post/{post}/file', 'fileDel')->name('post.file.del');
+Route::name('post.')->controller(PostController::class)->middleware(['auth:sanctum', 'throttle:6,1'])->group(function () {
+    // * resource
+    Route::apiResource('post', PostController::class);
+    // * file
+    Route::post('/post/{post}/file', 'fileAdd')->name('file.add');
+    Route::delete('/post/{post}/file', 'fileDel')->name('file.del');
+    // * comment
+    Route::post('/post/{post}/comment', 'storeComment')->name('comment.store');
+});
+Route::name('post.')->controller(PostController::class)->middleware(['throttle:6,1'])->group(function () {
+    // * post-comment
+    Route::get('/post/{post}/comment', 'comment')->name('comment.list');
 });
 
 // * Socialite singin
-Route::post('/socialite/singin', [SocialiteController::class, 'singin']);
+// Route::post('/socialite/singin', [SocialiteController::class, 'singin']);
 
 // * Temporary file
 Route::middleware('auth:sanctum')->post('/file', [FileController::class, 'file'])->name('file.temporary.upload');

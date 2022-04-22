@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Notifications\CustomVerifyEmail;
+use BeyondCode\Comments\Contracts\Commentator;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -52,7 +53,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Todo[] $todos
  * @property-read int|null $todos_count
  */
-class User extends Authenticatable implements MustVerifyEmail, HasMedia
+class User extends Authenticatable implements Commentator, HasMedia, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
     use InteractsWithMedia;
@@ -156,5 +157,15 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function getAvatarUrlAttribute(): string
     {
         return $this->getFirstMediaUrl('avatar');
+    }
+
+    /**
+     * Check if a comment for a specific model needs to be approved.
+     * @param mixed $model
+     * @return bool
+     */
+    public function needsCommentApproval($model): bool
+    {
+        return false;
     }
 }

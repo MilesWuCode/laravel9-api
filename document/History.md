@@ -231,6 +231,12 @@ class User extends Authenticatable implements Commentator
 }
 ```
 
+## spatie/laravel-comments
+
+```sh
+composer require spatie/laravel-comments
+```
+
 ## laravel/socialite
 
 ```sh
