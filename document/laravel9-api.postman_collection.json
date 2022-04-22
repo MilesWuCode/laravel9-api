@@ -629,6 +629,218 @@
 					"name": "post",
 					"item": [
 						{
+							"name": "file",
+							"item": [
+								{
+									"name": "create",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "collection",
+													"value": "gallery",
+													"type": "text"
+												},
+												{
+													"key": "file",
+													"value": "{{temporary_file}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{http}}://{{domain}}/api/post/1/file",
+											"protocol": "{{http}}",
+											"host": [
+												"{{domain}}"
+											],
+											"path": [
+												"api",
+												"post",
+												"1",
+												"file"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "collection",
+													"value": "gallery",
+													"type": "text"
+												},
+												{
+													"key": "media_id",
+													"value": "1",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{http}}://{{domain}}/api/post/1/file",
+											"protocol": "{{http}}",
+											"host": [
+												"{{domain}}"
+											],
+											"path": [
+												"api",
+												"post",
+												"1",
+												"file"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "comment",
+							"item": [
+								{
+									"name": "list",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{http}}://{{domain}}/api/post/1/comment?page=1&limit=6&sort=id_desc",
+											"protocol": "{{http}}",
+											"host": [
+												"{{domain}}"
+											],
+											"path": [
+												"api",
+												"post",
+												"1",
+												"comment"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "limit",
+													"value": "6"
+												},
+												{
+													"key": "sort",
+													"value": "id_desc"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "comment",
+													"value": "this is comment",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{http}}://{{domain}}/api/post/1/comment",
+											"protocol": "{{http}}",
+											"host": [
+												"{{domain}}"
+											],
+											"path": [
+												"api",
+												"post",
+												"1",
+												"comment"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "list",
 							"request": {
 								"auth": {
@@ -747,7 +959,23 @@
 								],
 								"body": {
 									"mode": "urlencoded",
-									"urlencoded": []
+									"urlencoded": [
+										{
+											"key": "title",
+											"value": "this is title",
+											"type": "text"
+										},
+										{
+											"key": "body",
+											"value": "this is body...",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "draft",
+											"type": "text"
+										}
+									]
 								},
 								"url": {
 									"raw": "{{http}}://{{domain}}/api/post",
@@ -800,10 +1028,10 @@
 											]
 										},
 										"url": {
-											"raw": "http://localhost/api/post",
-											"protocol": "http",
+											"raw": "{{http}}://{{domain}}/api/post",
+											"protocol": "{{http}}",
 											"host": [
-												"localhost"
+												"{{domain}}"
 											],
 											"path": [
 												"api",
@@ -1229,6 +1457,99 @@
 									"path": [
 										"api",
 										"post",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "like",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "type",
+											"value": "",
+											"description": "null, Like, Dislike",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{http}}://{{domain}}/api/post/1/like",
+									"protocol": "{{http}}",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"post",
+										"1",
+										"like"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "comment",
+					"item": [
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "{{http}}://{{domain}}/api/comment/1",
+									"protocol": "{{http}}",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"comment",
 										"1"
 									]
 								}
