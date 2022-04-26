@@ -46,6 +46,9 @@ open http://localhost
 
 # mailhog
 open http://localhost:8025
+
+# graphql playground
+open http://localhost/graphql-playground
 ```
 
 ## test
