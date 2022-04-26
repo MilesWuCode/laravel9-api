@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\PostController;
@@ -73,9 +74,9 @@ Route::name('comment.')
     ->group(function () {
         // * like
         Route::post('/comment/{comment}/like', 'like')->name('like');
+        // * reply list
+        Route::get('/comment/{comment}/reply', 'reply')->name('reply');
     });
-
-// * reply(wip)
 
 // * Socialite singin
 Route::post('/socialite/singin', [SocialiteController::class, 'singin'])

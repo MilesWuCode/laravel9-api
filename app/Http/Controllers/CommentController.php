@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Http\Requests\ListRequest;
 use App\Http\Requests\LikeRequest;
 use App\Transformers\CommentTransformer;
 use App\Http\Requests\UpdateCommentRequest;
@@ -68,6 +69,30 @@ class CommentController extends Controller
             ->setLike($comment, $request->input('type', ''));
 
         return Fractal::create($comment->fresh(), new CommentTransformer())
+            ->respond();
+    }
+
+    /**
+     * Comment or Reply list
+     *
+     * @param ListRequest $request
+     * @param Comment $comment
+     * @return JsonResponse
+     */
+    public function reply(ListRequest $request, Comment $comment): JsonResponse
+    {
+        $page = $request->input('page', 1);
+        $limit = $request->input('limit', 5);
+        $sort = $request->input('sort', 'id_asc');
+
+        [$column, $order] = preg_split('/_(?=(asc|desc)$)/', $sort);
+
+        $replies = $comment->comments()
+            ->approved()
+            ->orderBy($column, $order)
+            ->paginate($limit, ['*'], 'page', $page);
+
+        return Fractal::create($replies, new CommentTransformer())
             ->respond();
     }
 }

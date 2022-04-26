@@ -130,6 +130,30 @@ class PostController extends Controller
     }
 
     /**
+     * 設定喜歡或不喜歡
+     *
+     * @param LikeRequest $request
+     * @param \App\Models\Post  $post
+     * @return JsonResponse
+     */
+    public function like(LikeRequest $request, Post $post): JsonResponse
+    {
+        // ? like_count,dislike_count數字不同步問題
+        // TODO:修改.env的QUEUE_CONNECTION=sync才會同步
+        // TODO:思考該不該顯示數字
+
+        // $post = Post::with([
+        //     'loveReactant.reactions',
+        // ])->find($id);
+
+        $request->user()
+            ->setLike($post, $request->input('type', ''));
+
+        return Fractal::create($post->fresh(), new PostTransformer())
+            ->respond();
+    }
+
+    /**
      * 檔案新增
      *
      * @param PostFileAddRequest $request
@@ -215,30 +239,6 @@ class PostController extends Controller
         $comment = $post->comment($request->input('comment'));
 
         return Fractal::create($comment, new CommentTransformer())
-            ->respond();
-    }
-
-    /**
-     * 設定喜歡或不喜歡
-     *
-     * @param LikeRequest $request
-     * @param \App\Models\Post  $post
-     * @return JsonResponse
-     */
-    public function like(LikeRequest $request, Post $post): JsonResponse
-    {
-        // ? like_count,dislike_count數字不同步問題
-        // TODO:修改.env的QUEUE_CONNECTION=sync才會同步
-        // TODO:思考該不該顯示數字
-
-        // $post = Post::with([
-        //     'loveReactant.reactions',
-        // ])->find($id);
-
-        $request->user()
-            ->setLike($post, $request->input('type', ''));
-
-        return Fractal::create($post->fresh(), new PostTransformer())
             ->respond();
     }
 }
