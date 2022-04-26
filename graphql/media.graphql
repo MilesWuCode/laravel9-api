@@ -1,0 +1,11 @@
+type Media
+    @model(class: "\\Spatie\\MediaLibrary\\MediaCollections\\Models\\Media") {
+    id: ID!
+    name: String!
+    file_name: String!
+    url: String! @field(resolver: "\\App\\GraphQL\\Types\\MediaType@getUrl")
+    size: Int!
+    collection_name: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+}
