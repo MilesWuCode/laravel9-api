@@ -14,6 +14,7 @@ php artisan lighthouse:ide-helper
 
 # playground
 composer require mll-lab/laravel-graphql-playground
+php artisan vendor:publish --tag=graphql-playground-config
 
 # config
 php artisan vendor:publish --tag=lighthouse-config
