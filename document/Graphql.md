@@ -43,3 +43,18 @@ return [
     ...
 ];
 ```
+
+## mll-lab/graphql-php-scalars
+
+```sh
+composer require mll-lab/graphql-php-scalars
+```
+
+[schema.graphql](../graphql/schema.graphql)
+
+```gql
+# graphql/schema.graphql
+# mll-lab/graphql-php-scalars
+scalar Email @scalar(class: "MLL\\GraphQLScalars\\Email")
+scalar JSON @scalar(class: "MLL\\GraphQLScalars\\JSON")
+```
