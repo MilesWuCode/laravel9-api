@@ -1517,6 +1517,57 @@
 					"name": "comment",
 					"item": [
 						{
+							"name": "reply",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{http}}://{{domain}}/api/comment/1/reply?page=1&limit=6&sort=id_desc",
+									"protocol": "{{http}}",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"comment",
+										"1",
+										"reply"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "6"
+										},
+										{
+											"key": "sort",
+											"value": "id_desc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "show",
 							"request": {
 								"auth": {
@@ -1538,7 +1589,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{http}}://{{domain}}/api/comment/1",
+									"raw": "{{http}}://{{domain}}/api/comment/2",
 									"protocol": "{{http}}",
 									"host": [
 										"{{domain}}"
@@ -1546,7 +1597,7 @@
 									"path": [
 										"api",
 										"comment",
-										"1"
+										"2"
 									]
 								}
 							},
