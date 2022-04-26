@@ -58,3 +58,15 @@ composer require mll-lab/graphql-php-scalars
 scalar Email @scalar(class: "MLL\\GraphQLScalars\\Email")
 scalar JSON @scalar(class: "MLL\\GraphQLScalars\\JSON")
 ```
+
+## sanctum
+
+```php
+// config/lighthouse.php
+'middleware' => [
+    // Sanctum : Laravel's session cookies & CSRF
+    // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+    // ...
+],
+'guard' => 'sanctum',
+```

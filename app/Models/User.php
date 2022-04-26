@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -189,5 +190,15 @@ class User extends Authenticatable implements Commentator, HasMedia, MustVerifyE
     public function needsCommentApproval($model): bool
     {
         return false;
+    }
+
+    // method
+    public function setFile(string $collection, array $files = []): void
+    {
+        foreach ($files as $file) {
+            if (Storage::disk('temporary')->exists($file)) {
+                $this->addMediaFromDisk($file, 'temporary')->toMediaCollection($collection);
+            }
+        }
     }
 }

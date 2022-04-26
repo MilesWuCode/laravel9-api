@@ -395,6 +395,57 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "file",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "collection",
+											"value": "avatar",
+											"type": "text"
+										},
+										{
+											"key": "file",
+											"value": "{{temporary_file}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{http}}://{{domain}}/api/me/file",
+									"protocol": "{{http}}",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"me",
+										"file"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},

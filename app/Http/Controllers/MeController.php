@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Requests\MeFileAddRequest;
 use App\Http\Requests\UpdateMeRequest;
+use App\Models\User;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -81,5 +82,21 @@ class MeController extends Controller
         $request->user()->update(['password' => Hash::make($request->new_password)]);
 
         return response()->json(['message' => 'success'], 200);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param MeFileAddRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function fileAdd(MeFileAddRequest $request): JsonResponse
+    {
+        $this->authorize('update', $request->user());
+
+        $request->user()->setFile($request->input('collection'), [$request->input('file')]);
+
+        return Fractal::create($request->user(), new UserTransformer())
+            ->respond();
     }
 }

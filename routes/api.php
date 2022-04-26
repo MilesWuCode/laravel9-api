@@ -40,6 +40,7 @@ Route::controller(MeController::class)
         Route::get('/me', 'show')->name('me.show');
         Route::put('/me', 'update')->name('me.update');
         Route::put('/me/change-password', 'changePassword')->name('me.change-password');
+        Route::post('/me/file', 'fileAdd')->name('me.file.add');
     });
 
 // * todo
