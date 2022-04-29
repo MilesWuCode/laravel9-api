@@ -7,6 +7,7 @@ use BeyondCode\Comments\Contracts\Commentator;
 use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
 use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -60,6 +61,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Post[] $posts
  * @property-read int|null $posts_count
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLoveReacterId($value)
+ * @method static Builder|User verified()
  */
 class User extends Authenticatable implements Commentator, HasMedia, MustVerifyEmail, ReacterableInterface
 {
@@ -105,6 +107,12 @@ class User extends Authenticatable implements Commentator, HasMedia, MustVerifyE
     public function sendEmailVerificationNotification()
     {
         $this->notify(new CustomVerifyEmail);
+    }
+
+    // scope
+    public function scopeVerified(Builder $query): Builder
+    {
+        return $query->whereNotNull('email_verified_at');
     }
 
     // medialibrary

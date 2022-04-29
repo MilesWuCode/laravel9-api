@@ -70,4 +70,7 @@ php artisan ide-helper:generate
 
 # model
 php artisan ide-helper:models
+
+# lighthouse
+php artisan lighthouse:ide-helper
 ```

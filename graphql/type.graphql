@@ -1,0 +1,42 @@
+type Token {
+    plainTextToken: String!
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    email_verified_at: DateTime
+    created_at: DateTime!
+    updated_at: DateTime!
+    avatar_url: String!
+
+    avatar: [Media!] @morphMany(relation: "avatar")
+
+    todos(orderBy: _ @orderBy(columns: ["id", "created_at"])): [Todo!]!
+        @hasMany(relation: "todos", type: PAGINATOR, defaultCount: 3)
+
+    # posts(orderBy: _ @orderBy(columns: ["id", "created_at"])): [Blog!]!
+    #     @hasMany(relation: "blogs", type: PAGINATOR, defaultCount: 3)
+}
+
+type Todo {
+    id: ID!
+    user: User! @belongsTo(relation: "user")
+    content: String!
+    active: Boolean!
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+
+type Media
+    @model(class: "\\Spatie\\MediaLibrary\\MediaCollections\\Models\\Media") {
+    id: ID!
+    name: String!
+    file_name: String!
+    url: String! @field(resolver: "\\App\\GraphQL\\Types\\MediaType@getUrl")
+    size: Int!
+    collection_name: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+}

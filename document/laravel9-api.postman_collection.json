@@ -610,6 +610,11 @@
 											"key": "content",
 											"value": "change content",
 											"type": "text"
+										},
+										{
+											"key": "active",
+											"value": "true",
+											"type": "text"
 										}
 									]
 								},
@@ -1806,6 +1811,234 @@
 							"response": []
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "graphql",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n  $name: String!\n  $email: String!\n  $password: String!\n  $comfirm_password: String!\n) {\n  register(\n    name: $name\n    email: $email\n    password: $password\n    comfirm_password: $comfirm_password\n  ) {\n    id\n    name\n    email\n    email_verified_at\n    created_at\n    updated_at\n  }\n}\n",
+								"variables": "{\n    \"name\": \"miles\",\n    \"email\": \"miles@email.com\",\n    \"password\": \"password\",\n    \"comfirm_password\": \"password\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{http}}://{{domain}}/graphql",
+							"protocol": "{{http}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "send verify email",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($email: String!) {\n  sendVerifyEmail(email: $email)\n}\n",
+								"variables": "{\n    \"email\": \"miles@email.com\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{http}}://{{domain}}/graphql",
+							"protocol": "{{http}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify email",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($email: String!, $code: String!) {\n  verifyEmail(email: $email, code: $code)\n}\n",
+								"variables": "{\n    \"email\": \"miles@email.com\",\n    \"code\": \"357994\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{http}}://{{domain}}/graphql",
+							"protocol": "{{http}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = JSON.parse(responseBody);",
+									"",
+									"postman.setEnvironmentVariable('token', res.data.login.plainTextToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($email: String!, $password: String!) {\n  login(email: $email, password: $password) {\n    plainTextToken\n  }\n}\n",
+								"variables": "{\n    \"email\": \"miles@email.com\",\n    \"password\": \"password\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{http}}://{{domain}}/graphql",
+							"protocol": "{{http}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  logout\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{http}}://{{domain}}/graphql",
+							"protocol": "{{http}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation(\n  $oldPassword: String!\n  $newPassword: String!\n  $comfirmPassword: String!\n) {\n  changePassword(\n    old_password: $oldPassword\n    new_password: $newPassword\n    comfirm_password: $comfirmPassword\n  )\n}\n",
+								"variables": "{\n  \"oldPassword\": \"password\",\n  \"newPassword\": \"newpassword\",\n  \"comfirmPassword\": \"newpassword\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{http}}://{{domain}}/graphql",
+							"protocol": "{{http}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

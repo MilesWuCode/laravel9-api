@@ -1,0 +1,34 @@
+extend type Mutation {
+    register(
+        name: String! @rules(apply: ["required", "max:100"])
+        email: String!
+            @rules(
+                apply: ["required", "email", "unique:users,email"]
+                # 也可以定義在這裡：resources/lang/en/validation.php:attributes
+                attribute: "e-mail"
+            )
+        password: String! @rules(apply: ["required", "min:8"])
+        comfirm_password: String!
+            @rules(
+                apply: ["required", "same:password"]
+                # 也可以定義在這裡：resources/lang/en/validation.php:attributes
+                attribute: "comfirm-password"
+            )
+    ): User @field(resolver: "Register")
+
+    sendVerifyEmail(
+        email: String! @rules(apply: ["required", "email"], attribute: "e-mail")
+    ): Boolean @throttle(maxAttempts: 3) @field(resolver: "SendVerifyEmail")
+
+    verifyEmail(
+        email: String! @rules(apply: ["required", "email"], attribute: "e-mail")
+        code: String! @rules(apply: ["required"])
+    ): Boolean @field(resolver: "VerifyEmail")
+
+    login(
+        email: String! @rules(apply: ["required", "email"], attribute: "e-mail")
+        password: String! @rules(apply: ["required", "min:8"])
+    ): Token @field(resolver: "Login")
+
+    logout: Boolean @guard @field(resolver: "Logout")
+}
