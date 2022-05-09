@@ -398,7 +398,7 @@ alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 php artisan sail:install --with=mysql,redis,mailhog
 ```
 
-## laravel old version
+## old version
 
 ```sh
 composer create-project laravel/laravel="8.*.*" project-name
