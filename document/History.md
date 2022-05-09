@@ -396,6 +396,9 @@ alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 
 # with
 php artisan sail:install --with=mysql,redis,mailhog
+
+# publish
+sail artisan sail:publish
 ```
 
 ## old version
