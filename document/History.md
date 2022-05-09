@@ -374,12 +374,28 @@ public function setUp(): void
 
 ```sh
 # test
-sail php artisan test
-sail php artisan test --filter UserTest
+php artisan test
+php artisan test --filter UserTest
 
 # parallel
-sail php artisan test --parallel
-sail php artisan test --parallel --recreate-databases
+php artisan test --parallel
+php artisan test --parallel --recreate-databases
+```
+
+## sail
+
+```sh
+# install
+curl -s "https://laravel.build/project-name" | bash
+
+# run
+./vendor/bin/sail up -d
+
+# alias
+alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
+
+# with
+php artisan sail:install --with=mysql,redis,mailhog
 ```
 
 ## laravel old version
