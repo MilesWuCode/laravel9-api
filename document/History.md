@@ -381,3 +381,9 @@ sail php artisan test --filter UserTest
 sail php artisan test --parallel
 sail php artisan test --parallel --recreate-databases
 ```
+
+## laravel old version
+
+```sh
+composer create-project laravel/laravel="8.*.*" project-name
+```

@@ -14,7 +14,7 @@ docker run --rm \
     composer install --ignore-platform-reqs
 
 # env file
-cp .env.sail
+cp .env.sail .env
 
 # alias sail
 alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
