@@ -49,6 +49,10 @@ class UpdateTodoRequest extends FormRequest
      */
     private function toBoolean($booleable)
     {
-        return filter_var($booleable, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        // php >= 8.0.0
+        return filter_var($booleable, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE);
+
+        // php < 8.0.0
+        // return filter_var($booleable, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
     }
 }
