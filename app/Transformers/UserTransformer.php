@@ -40,7 +40,7 @@ class UserTransformer extends TransformerAbstract
             'avatar' => $user->getFirstMediaUrl('avatar'),
             // * User::getAvatarUrlAttribute
             // 'avatar' => $user->avatar_url,
-            'email_verified_at' => $user->email_verified_at->format('Y-m-d H:i:s'),
+            'email_verified_at' => $user->email_verified_at ? $user->email_verified_at->format('Y-m-d H:i:s'): null,
             'created_at' => $user->created_at->format('Y-m-d H:i:s'),
             'updated_at' => (string) $user->updated_at,
         ];
