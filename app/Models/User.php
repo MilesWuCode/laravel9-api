@@ -121,9 +121,11 @@ class User extends Authenticatable implements Commentator, HasMedia, MustVerifyE
         $this->addMediaCollection('avatar')
             ->acceptsMimeTypes(['image/jpeg'])
             // 指定前端圖片位置
-            ->useFallbackUrl(config('frontend.url').'/images/fallback.jpg')
+            // ->useFallbackUrl(config('frontend.url').'/images/fallback.jpg')
             // 指定後端圖片位置
-            // ->useFallbackPath(public_path('/images/fallback.jpg'))
+            ->useFallbackUrl(url('/images/fallback.jpg'))
+            // 指定圖片路徑
+            // ->useFallbackPath('/images/fallback.jpg')
             ->singleFile()
             ->registerMediaConversions(function (Media $media) {
                 $this
