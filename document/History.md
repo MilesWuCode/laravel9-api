@@ -406,3 +406,15 @@ sail artisan sail:publish
 ```sh
 composer create-project laravel/laravel="8.*.*" project-name
 ```
+
+-   .env.sail
+
+```ini
+# docker
+APP_PORT=80
+FORWARD_DB_PORT=3306
+FORWARD_REDIS_PORT=6379
+FORWARD_MEILISEARCH_PORT=7700
+FORWARD_MAILHOG_PORT=1025
+FORWARD_MAILHOG_DASHBOARD_PORT=8025
+```
