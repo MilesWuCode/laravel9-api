@@ -7,9 +7,9 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -116,13 +116,15 @@ class AuthController extends Controller
             'password' => 'required|min:8',
         ])->validate();
 
-        $credentials = $request->only(['email', 'password']);
+        $user = User::where('email', $request->email)->first();
 
-        if (!Auth::attempt($credentials)) {
-            abort(401, 'Unauthorized');
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
         }
 
-        $token = $request->user()->createToken('normal');
+        $token = $user->createToken('normal');
 
         return response()->json(['token' => $token->plainTextToken], 200);
     }

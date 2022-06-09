@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FirebaseAuthController;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MeController;
@@ -97,3 +98,8 @@ Route::post('/demo/upload-file', function (Request $request) {
         'size' => $file->getSize(),
     ];
 })->name('demo.upload-file');
+
+
+// * Firebase Auth
+Route::post('/firebase/auth/singin', [FirebaseAuthController::class, 'singin'])
+    ->name('firebase.auth.singin');

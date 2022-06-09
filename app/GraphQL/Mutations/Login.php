@@ -3,8 +3,9 @@
 namespace App\GraphQL\Mutations;
 
 use App\Exceptions\GraphqlException;
+use App\Models\User;
 use GraphQL\Type\Definition\ResolveInfo;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final class Login
@@ -20,16 +21,13 @@ final class Login
      */
     public function __invoke($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $credentials = [
-            'email' => $args['email'],
-            'password' => $args['password'],
-        ];
+        $user = User::where('email', $args['email'])->first();
 
-        if (!Auth::attempt($credentials)) {
+        if (! $user || ! Hash::check($args['password'], $user->password)) {
             // throw new Error('Invalid credentials.');
             throw new GraphqlException('Invalid credentials.');
         }
 
-        return Auth::user()->createToken('normal')->toArray();
+        return $user->createToken('normal');
     }
 }
