@@ -37,10 +37,7 @@ class FirebaseAuthController extends Controller
 
         $uid = $verifiedIdToken->claims()->get('sub');
 
-        // echo $uid;
-
-        // $user = User::where('uid', $uid)->firstOrFail();
-        $user = User::find(1);
+        $user = User::where('uid', $uid)->firstOrFail();
 
         $token = $user->createToken('normal');
 
