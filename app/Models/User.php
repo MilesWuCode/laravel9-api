@@ -78,6 +78,7 @@ class User extends Authenticatable implements Commentator, HasMedia, MustVerifyE
         'name',
         'email',
         'password',
+        'uid',
     ];
 
     /**
