@@ -108,5 +108,5 @@ Route::name('firebase.')
         // * register
         Route::post('/firebase/auth/register', 'register')->name('auth.register');
         // * singin
-        Route::get('/firebase/auth/singin', 'singin')->name('auth.singin');
+        Route::post('/firebase/auth/singin', 'singin')->name('auth.singin');
     });
