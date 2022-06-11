@@ -41,24 +41,23 @@ class FirebaseAuthController extends Controller
 
         $uid = $verifiedIdToken->claims()->get('sub');
 
-        $user = User::where('uid', $uid)->first();
+        try {
+            $firebaseUser = $auth->getUser($uid);
+        } catch (UserNotFound $e) {
+            return response()->json([
+                'message' => 'Firebase user not found',
+                'errors' => $e->getMessage(),
+            ], Response::HTTP_UNAUTHORIZED);
+        }
 
-        if (!$user) {
-            try {
-                $firebaseUser = $auth->getUser($uid);
-            } catch (UserNotFound $e) {
-                return response()->json([
-                    'message' => 'Firebase user not found',
-                    'errors' => $e->getMessage(),
-                ], Response::HTTP_UNAUTHORIZED);
-            }
+        $user = User::updateOrCreate(['uid' => $firebaseUser->uid], [
+            'email' => $firebaseUser->email,
+            'name' => $firebaseUser->displayName,
+            'uid' => $firebaseUser->uid,
+        ]);
 
-            $user = User::create([
-                'email' => $firebaseUser->email,
-                'name' => $firebaseUser->displayName,
-                'uid' => $firebaseUser->uid,
-                'email_verified_at' => $firebaseUser->emailVerified ? now() : null,
-            ]);
+        if ($user->email_verified_at === null && $firebaseUser->emailVerified) {
+            $user->markEmailAsVerified();
         }
 
         $token = $user->createToken('normal');
