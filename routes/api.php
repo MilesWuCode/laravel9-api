@@ -105,8 +105,6 @@ Route::name('firebase.')
     ->controller(FirebaseAuthController::class)
     ->middleware(['throttle:6,1'])
     ->group(function () {
-        // * register
-        Route::post('/firebase/auth/register', 'register')->name('auth.register');
         // * singin
         Route::post('/firebase/auth/singin', 'singin')->name('auth.singin');
     });
