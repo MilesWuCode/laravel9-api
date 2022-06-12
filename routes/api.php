@@ -103,7 +103,7 @@ Route::post('/demo/upload-file', function (Request $request) {
 // * Firebase Auth
 Route::name('firebase.')
     ->controller(FirebaseAuthController::class)
-    ->middleware(['throttle:6,1'])
+    ->middleware(['throttle:10,1'])
     ->group(function () {
         // * singin
         Route::post('/firebase/auth/singin', 'singin')->name('auth.singin');

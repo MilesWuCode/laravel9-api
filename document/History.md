@@ -2,9 +2,9 @@
 
 ## email verification
 
--   app/Http/Controllers/AuthController.php
--   app/Notifications/CustomVerifyEmail.php
--   app/Models/User.php
+- app/Http/Controllers/AuthController.php
+- app/Notifications/CustomVerifyEmail.php
+- app/Models/User.php
 
 ```php
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -28,7 +28,7 @@ php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
 php artisan migrate
 ```
 
--   app/Http/Kernel.php
+- app/Http/Kernel.php
 
 ```diff
 'api' => [
@@ -37,6 +37,21 @@ php artisan migrate
     'throttle:api',
     \Illuminate\Routing\Middleware\SubstituteBindings::class,
 ],
+```
+
+- .env
+
+```ini
+# 前端頁面使用/sanctum/csrf-cookie
+# sanctum.config的stateful參數有設
+SANCTUM_STATEFUL_DOMAINS=domain
+```
+
+- config/cors.php
+
+```php
+// axios.defaults.withCredentials = true;
+'supports_credentials' => true,
 ```
 
 ## barryvdh/laravel-ide-helper
@@ -407,7 +422,7 @@ sail artisan sail:publish
 composer create-project laravel/laravel="8.*.*" project-name
 ```
 
--   .env.sail
+- .env.sail
 
 ```ini
 # docker
