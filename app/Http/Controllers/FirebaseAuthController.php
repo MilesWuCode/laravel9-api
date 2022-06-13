@@ -51,13 +51,13 @@ class FirebaseAuthController extends Controller
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        $userData = Arr::first($firebaseUser->providerData);
+        $userInfo = Arr::first($firebaseUser->providerData);
 
         $user = User::updateOrCreate(['uid' => $uid], [
             'uid' => $uid,
-            'email' => $userData ? $userData['email'] : $firebaseUser->email,
-            'name' => $userData ? $userData['displayName'] : $firebaseUser->displayName,
-            // 'provider' => $userData ? $userData['providerId'] : null,
+            'email' => $userInfo ? $userInfo->email : $firebaseUser->email,
+            'name' => $userInfo ? $userInfo->displayName : $firebaseUser->displayName,
+            // 'provider' => $userInfo ? $userInfo->providerId : null,
         ]);
 
         if ($user->email_verified_at === null && $firebaseUser->emailVerified) {
