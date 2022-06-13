@@ -57,7 +57,7 @@ class FirebaseAuthController extends Controller
             'uid' => $uid,
             'email' => $userInfo ? $userInfo->email : $firebaseUser->email,
             'name' => $userInfo ? $userInfo->displayName : $firebaseUser->displayName,
-            // 'provider' => $userInfo ? $userInfo->providerId : null,
+            // 'providerId' => $userInfo ? $userInfo->providerId : null,
         ]);
 
         if ($user->email_verified_at === null && $firebaseUser->emailVerified) {
