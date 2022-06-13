@@ -11,6 +11,7 @@ use Kreait\Firebase\Exception\Auth\FailedToVerifyToken;
 use Kreait\Firebase\Exception\Auth\UserNotFound;
 use Kreait\Laravel\Firebase\Facades\Firebase;
 use Spatie\Fractal\Facades\Fractal;
+use Illuminate\Support\Arr;
 
 class FirebaseAuthController extends Controller
 {
@@ -50,10 +51,13 @@ class FirebaseAuthController extends Controller
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        $user = User::updateOrCreate(['uid' => $firebaseUser->uid], [
-            'email' => $firebaseUser->email,
-            'name' => $firebaseUser->displayName,
-            'uid' => $firebaseUser->uid,
+        $userData = Arr::first($firebaseUser->providerData);
+
+        $user = User::updateOrCreate(['uid' => $uid], [
+            'uid' => $uid,
+            'email' => $userData ? $userData['email'] : $firebaseUser->email,
+            'name' => $userData ? $userData['displayName'] : $firebaseUser->displayName,
+            // 'provider' => $userData ? $userData['providerId'] : null,
         ]);
 
         if ($user->email_verified_at === null && $firebaseUser->emailVerified) {
